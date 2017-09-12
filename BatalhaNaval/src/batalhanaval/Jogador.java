@@ -1,5 +1,6 @@
 package batalhanaval;
 
+
 import java.util.Scanner;
 
 public class Jogador {
@@ -71,6 +72,26 @@ public class Jogador {
         imprimirTabuleiro();
         PosicionarBarcos(destruidor);
         imprimirTabuleiro();
+    }
+    
+     void MontarTabuleiroMaquina() {
+        for (int i = 0; i < 11; i++) {
+            for (int j = 0; j < 11; j++) {
+                if (i == 0) {
+                    tabuleiro[i][j] = j;
+                }
+                if (j == 0) {
+                    tabuleiro[i][j] = i;
+                }
+            }
+        }
+        PosicionarBarcosMaquina(portaAvioes);
+        PosicionarBarcosMaquina(navioGuerra);
+        PosicionarBarcosMaquina(cruzador);
+        PosicionarBarcosMaquina(submarino);
+        PosicionarBarcosMaquina(destruidor);
+        //teste 
+        //imprimirTabuleiro();
     }
 
     // posiciona os barcos no tabuleiro 
@@ -179,6 +200,103 @@ public class Jogador {
             }
         }
     }
+    
+    //posiciona os barcos de forma aleatória pro jogador máquina
+     void PosicionarBarcosMaquina(Barco barco) {
+        //Random l=new Random();
+        //Random c=new Random();
+       // Random orientacao=new Random();
+        boolean check = true;
+        int checkTab = 0;
+        int x;
+        int l, c, orientacao ;
+
+        do {
+            if (check == false) {
+                check = true;
+            }
+             l = (int) (1+ (Math.random()*10));
+             c = (int) (1+ (Math.random()*10));
+             orientacao = (int) (1+ (Math.random()*2));
+           
+         
+
+            if (orientacao==1) {
+                x = (c-1) + barco.tamanho;
+                if (x > 10) {
+                    check = false;
+                } else {
+                    for (int i = l; i <= l; i++) {
+                        for (int j = c; j < x; j++) {
+                            if (tabuleiro[i][j] != 0) {
+                                checkTab += 1;
+                            }
+                        }
+                    }
+
+                    if (checkTab != 0) {
+                        check = false;
+                        checkTab = 0;
+                    }
+                }
+            } else {
+                x = (l-1) + barco.tamanho;
+                if (x > 10) {
+                    check = false;
+                } else {
+
+                    for (int i = l; i <= x; i++) {
+                        for (int j = c; j <= c; j++) {
+                            if (tabuleiro[i][j] != 0) {
+                                checkTab += 1;
+                            }
+                        }
+                    }
+
+                    if (checkTab != 0) {
+                        check = false;
+                        checkTab = 0;
+                    }
+
+                }
+            }
+            if (check == false) {
+                x = 0;
+            }
+        } while (check == false);
+
+         if (orientacao==1) {
+            for (int i = l; i <= l; i++) {
+                for (int j = c; j <= x; j++) {
+                    if (barco.tamanho != 3) {
+                        tabuleiro[i][j] = barco.tamanho;
+                    } else {
+                        if (barco.nome.equals("Submarino")) {
+                            tabuleiro[i][j] = 32;
+                        } else {
+                            tabuleiro[i][j] = 31;
+                        }
+                    }
+                }
+            }
+
+        } else {
+            for (int i = l; i <= x; i++) {
+                for (int j = c; j <= c; j++) {
+                    if (barco.tamanho != 3) {
+                        tabuleiro[i][j] = barco.tamanho;
+                    } else {
+                        if (barco.nome.equals("Submarino")) {
+                            tabuleiro[i][j] = 32;
+                        } else {
+                            tabuleiro[i][j] = 31;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
 
     // grava a jogada no tabuleiro
     void jogar( Jogador jogador) {
@@ -265,6 +383,81 @@ public class Jogador {
 
     }
 
+    
+    // grava a jogada no tabuleiro
+    void jogarMaquina( Jogador jogador) {
+        int l, c;
+
+        do {
+             l = (int) (1+ (Math.random()*10));
+             c = (int) (1+ (Math.random()*10));
+                        
+             if ( (jogador.tabuleiro[l][c]==1) || (jogador.tabuleiro[l][c]==6) ){
+                 //System.out.println("Este movimento já foi feito");
+             }
+            
+        } while( (jogador.tabuleiro[l][c]==1) || (jogador.tabuleiro[l][c]==6) );
+        
+        if (jogador.tabuleiro[l][c] == 0) {
+                jogador.tabuleiro[l][c] = 1;
+                System.out.println("Tiro na água");
+                System.out.println("");
+            }
+        else if (jogador.tabuleiro[l][c] == 2){
+            jogador.tabuleiro[l][c] = 6;
+            jogador.destruidor.contador+=1;
+            jogador.destruidor.alterarStatus();
+            System.out.println("Fogo!");
+            if (jogador.destruidor.status==false){
+                System.out.println("Voce afundou o Destruidor");
+            }
+            System.out.println("");
+        }
+        else if (jogador.tabuleiro[l][c] ==31){
+            jogador.tabuleiro[l][c] = 6;
+            jogador.cruzador.contador+=1;
+            jogador.cruzador.alterarStatus();
+            System.out.println("Fogo!");
+            if (jogador.cruzador.status==false){
+                System.out.println("Voce afundou o Cruzador");
+            }
+            System.out.println("");
+        }
+        else if (jogador.tabuleiro[l][c] == 32){
+            jogador.tabuleiro[l][c] = 6;
+            jogador.submarino.contador+=1;
+            jogador.submarino.alterarStatus();
+            System.out.println("Fogo!");
+            if (jogador.submarino.status==false){
+                System.out.println("Voce afundou o Submarino");
+            }
+            System.out.println("");
+        }
+        
+        else if (jogador.tabuleiro[l][c] == 4){
+            jogador.tabuleiro[l][c] = 6;
+            jogador.navioGuerra.contador+=1;
+            jogador.navioGuerra.alterarStatus();
+            System.out.println("Fogo!");
+            if (jogador.navioGuerra.status==false){
+            System.out.println("Voce afundou o Navio de Guerra");
+            }
+            System.out.println("");
+        }
+        else{
+            jogador.tabuleiro[l][c] = 6;
+            jogador.portaAvioes.contador+=1;
+            jogador.portaAvioes.alterarStatus();
+            System.out.println("Fogo!");
+            if (jogador.portaAvioes.status==false){
+            System.out.println("Voce afundou o Porta Aviões");
+            }
+            System.out.println("");
+            
+        }
+
+    }
+    
     void imprimirTabuleiro() {
         /**
          * 0= quadrado não jogado - imprimir " " 1= agua - imprimir a 2= barco
@@ -342,6 +535,8 @@ public class Jogador {
         }
 
     }
+    
+   
 
     public int VerificarStatus(boolean status1, boolean status2, boolean status3,
             boolean status4, boolean status5) {
