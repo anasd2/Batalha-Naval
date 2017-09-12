@@ -73,7 +73,7 @@ public class Jogador {
         PosicionarBarcos(destruidor);
         imprimirTabuleiro();
     }
-    
+    // monta o tabuleiro do jogador maquina e chama o pocicionarBarcosMaquina
      void MontarTabuleiroMaquina() {
         for (int i = 0; i < 11; i++) {
             for (int j = 0; j < 11; j++) {
