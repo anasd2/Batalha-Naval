@@ -46,7 +46,7 @@ public class BatalhaNaval {
         
         while (VS==0){
             if (vez==1){
-                System.out.println("Jogador 1"+ jogador1.nome);
+                System.out.println("Jogador 1 : "+ jogador1.nome);
                               
                 jogador1.jogar(jogador2); 
                 
@@ -66,7 +66,7 @@ public class BatalhaNaval {
             }
             
             else {
-                System.out.println("Jogador 1"+ jogador2.nome);                 
+                System.out.println("Jogador 2 : "+ jogador2.nome);                 
                 jogador2.jogar(jogador1); 
                 
                 VS=jogador1.VerificarStatus(jogador1.cruzador.status, jogador1.destruidor.status, 
@@ -93,5 +93,4 @@ public class BatalhaNaval {
 }
     
     
-// horizontal ou vertical?
-  
+
